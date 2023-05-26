@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+
+  <!-- <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+   -->
+
+  <title>Страница администратора</title>
+
+</head>
+<body>
+
+
+<div class="d-flex flex-column bd-highlight mb-2">
+
+  <!-- создание навигационной панели (шапка) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+    <div class="container">
+      <div id="navbar" class="collapse navbar-collapse">
+        <!-- создание задела для почты и ролей на навигационной панели (шапка) -->
+        <ul class="navbar-nav mr-auto">
+          <table>
+            <tbody>
+            <tr style="color: aliceblue">
+              <td id="authorized_user_email" class="font-weight-bold"></td>
+              <td class="text-dark">_</td>
+              <td class="font-weight-light">с ролями:</td>
+              <td class="text-dark">_</td>
+              <td id="authorized_user_firstname" class="font-italic"></td>
+            </tr>
+            </tbody>
+          </table>
+        </ul>
+        <!-- создание кнопки "выход" на навигационной панели (шапка) -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Выход</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Под шапкой. style="height: 100%" растягивает тело на всю высоту страницы -->
+  <div class="d-flex flex-row bd-highlight" style="height: 100%">
+
+    <!-- боковое меню -->
+    <div class="p-2 flex-shrink-2 bd-highlight">
+
+      <div class="nav nav-pills flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a onclick="showAllUsers()" class="nav-link" id="v-pills-admin-tab" data-toggle="pill"
+           href="#admin_panel" role="tab" aria-controls="admin_panel" aria-selected="false">Администратор</a>
+        <a onclick="tableAuthorizedUser()" class="nav-link active" id="v-pills-user-tab" data-toggle="pill"
+           href="#user_panel" role="tab" aria-controls="user_panel" aria-selected="true">Пользователь</a>
+      </div>
+
+    </div>
+
+
+    <!-- основная страница -->
+    <div class="p-2 w-100 bd-highlight" style="background-color: #F5F5F5">
+
+
+      <div class="tab-content" id="v-pills-tabContent">
+
+
+        <!-- Здесь будет размещаться страница администратора -->
+        <div class="tab-pane fade" id="admin_panel" role="tabpanel" aria-labelledby="v-pills-admin-tab">
+
+          <!-- Основной контент страницы  -->
+          <br/>
+          <h1>Панель администратора</h1>
+
+          <!-- Карточка с навигацией (в заголовке) Убрали границы через border-0 -->
+          <div class="card border-0" style="background-color: #F5F5F5; height: 100%">
+            <!-- Шапка с навигацией -->
+            <div class="card-header bg-transparent"> <!-- Убрали заливку заголовка через bg-transparent -->
+              <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#all_users">Таблица пользователей</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#add_user">Новый пользователь</a>
+                </li>
+                <li class="nav-item">
+                  <!-- showVKUsers() -->
+                  <a id="new_admin" onclick="getUsersWhichWantToBeAAdminForTable()" class="nav-link" data-toggle="tab" href="#add_admin">Новый администратор</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Текстовый контент -->
+            <div class="card-body tab-content">
+
+
+              <!-- Карточка всех пользователей -->
+              <div class="tab-pane fade show active" id="all_users">
+
+                <div class="card">
+                  <div class="card-header">Все пользователи</div>
+
+                  <div class="card-body">
+
+                    <table class = "table table-striped table-responsive-md" style="background-color: #fff">
+                      <thead>
+                      <tr>
+                        <th>ID:</th>
+                        <th>Фамилия:</th>
+                        <th>Имя:</th>
+                        <th>Email:</th>
+                        <th>Роль:</th>
+                        <th>Действия:</th>
+                      </tr>
+                      </thead>
+                      <tbody id="allUserTableBody">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <!-- Карточка добавления нового пользователя -->
+              <div class="tab-pane fade" id="add_user">
+                <!-- Добавление внутренней карточки -->
+                <div class="card">
+                  <div class="card-header">Добавить нового пользователя</div>
+                  <div class="card-body">
+                    <div class="container">
+                      <div class="row">
+                        <div class="w-50 mx-auto">
+
+                          <!-- success message -->
+                          <div id="success_append"></div>
+
+                          <!-- mistake message -->
+                          <div id="mistake_append"></div>
+
+                          <form>
+
+                            <div class="form-group">
+                              <label class="control-label" for="lastName_append">Фамилия:</label>
+                              <input id="lastName_append" type="text" class="form-control"
+                                     required autofocus="autofocus" style="background-color: #F0E68C"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label class="control-label" for="name_append">Имя:</label>
+                              <input id="name_append" type="text" class="form-control"
+                                     required autofocus="autofocus" style="background-color: #F0E68C"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label class="control-label" for="email_append">Email:</label>
+                              <input id="email_append" type="text" class="form-control"
+                                     required autofocus="autofocus" style="background-color: #F0E68C"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label class="control-label" for="password_append">Пароль:</label>
+                              <input id="password_append" class="form-control" type="password"
+                                     required autofocus="autofocus" style="background-color: #F0E68C"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="role_append">Роль:</label>
+                              <select id="role_append" class="form-control">
+                                <option value="ROLE_USER">Пользователь</option>
+                                <option value="ROLE_ADMIN">Администратор</option>
+                              </select>
+                            </div>
+
+
+                            <div class="form-group text-center">
+                              <button id="append_user" type="button"
+                                      class="btn btn-success mb-2" onclick="appendUser()">
+                                Добавить
+                              </button>
+                            </div>
+
+                          </form>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Карточка желающих стать новым администратором -->
+              <div class="tab-pane fade" id="add_admin">
+
+                <div class="card">
+                  <div class="card-header">Кто хочет получить роль администратора</div>
+
+                  <div class="card-body">
+
+                    <div class="table-responsive-xl">
+                      <table class="table table-striped" style="background-color: #fff">
+                        <thead>
+                        <tr>
+                          <th>ID пользователя:</th>
+                          <th>Имя пользователя:</th>
+                          <th>Действия:</th>
+                        </tr>
+                        </thead>
+                        <tbody id="get_VK">
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div><!-- Конец карточки -->
+        </div>
+
+
+        <!-- Здесь будет размещаться страница пользователя -->
+        <div class="tab-pane fade show active" id="user_panel" role="tabpanel" aria-labelledby="v-pills-user-tab">
+
+          <!-- Основной контент страницы  -->
+          <br/>
+
+          <div class="d-flex align-content-start justify-content-between">
+            <div class="p-2"><h1>Панель пользователя</h1></div>
+            <div class="p-2">
+              <!-- adminRequest(), buttonRefuse() -->
+              <button id="wantToBeAdmin" type="button" class="btn btn-info" onclick="postToVKAndChangeUserStatusToIWantToBeAAdminInDB()">Хочу стать админом</button>
+              <button id="refuse" type="button" class="btn btn-warning" onclick="checkUserStatusInDB()">Отказано?</button>
+              <div id="refuseMessage"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Личная информация пользователя</div>
+
+            <div class="card-body">
+
+              <div class="table-responsive"> <!-- позволяет сделать горизонтальную прокрутку таблицы -->
+                <table class = "table table-striped table-responsive-md" style="background-color: #fff">
+                  <thead>
+                  <tr>
+                    <th>ID:</th>
+                    <th>Фамилия:</th>
+                    <th>Имя:</th>
+                    <th>Email:</th>
+                    <th>Роль:</th>
+                  </tr>
+                  </thead>
+                  <tbody id="oneUserTableBody">
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+
+<!-- Модальное окно обновления -->
+<div id="modal_edit" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- шапка обновления -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_editLabel">Обновление данных о пользователе</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- тело обновления -->
+      <div class="modal-body">
+
+        <div id="error_edit"></div>
+
+        <form id="edit_of_user">
+
+          <!-- Add hidden form field to handle update <input type="hidden" th:field="*{id}"/> -->
+          <fieldset disabled>
+            <div class="form-group">
+              <label for="ID_edit" class="col-form-label offset-2">ID:</label>
+              <input id="ID_edit" type="text" class="form-control offset-2 col-8">
+            </div>
+          </fieldset>
+
+          <div class="form-group">
+            <label for="lastName_edit" class="col-form-label offset-2">Фамилия:</label>
+            <input id="lastName_edit" type="text" class="form-control offset-2 col-8">
+          </div>
+
+          <div class="form-group">
+            <label for="name_edit" class="col-form-label offset-2">Имя:</label>
+            <input id="name_edit" type="text" class="form-control offset-2 col-8">
+          </div>
+
+          <div class="form-group">
+            <label for="email_edit" class="col-form-label offset-2">Email:</label>
+            <div class="input-group-prepend">
+              <input id="email_edit" type="text" class="form-control offset-2 col-7">
+              <div class="input-group-text ">@</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password_edit" class="col-form-label offset-2">Пароль:</label>
+            <input id="password_edit" type="text" class="form-control offset-2 col-8">
+          </div>
+
+          <div class="form-group">
+            <label for="role_edit" class="col-form-label offset-2">Роль:</label>
+            <select id="role_edit" class="form-control offset-2 col-8">
+              <option value="ROLE_USER">Пользователь</option>
+              <option value="ROLE_ADMIN">Администратор</option>
+            </select>
+          </div>
+
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <!-- form="edit_of_user" как раз говорит, что эта кнопка относится к конкретной форме запроса -->
+        <button id="edit_user" form="edit_of_user" type="button" class="btn btn-primary">Обновить</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Модальное окно удаления -->
+<div class="modal fade" id="modal_delete" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <!-- шапка обновления -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_deleteLabel">Обновление данных о пользователе</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- тело удаления -->
+      <div class="modal-body">
+
+
+        <form id="delete_of_user">
+
+          <!-- Add hidden form field to handle update -->
+          <fieldset disabled>
+
+            <div class="form-group">
+              <label for="ID_delete" class="col-form-label offset-2">ID:</label>
+              <input id="ID_delete" type="text" class="form-control offset-2 col-8">
+            </div>
+
+            <div class="form-group">
+              <label for="lastName_delete" class="col-form-label offset-2">Фамилия:</label>
+              <input id="lastName_delete" type="text" class="form-control offset-2 col-8">
+            </div>
+
+            <div class="form-group">
+              <label for="name_delete" class="col-form-label offset-2">Имя:</label>
+              <input id="name_delete" type="text" class="form-control offset-2 col-8">
+            </div>
+
+            <div class="form-group">
+              <label for="email_delete" class="col-form-label offset-2">Email:</label>
+              <div class="input-group-prepend">
+                <input id="email_delete" type="text" class="form-control offset-2 col-7">
+                <div class="input-group-text ">@</div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="role_delete" class="col-form-label offset-2">Роль:</label>
+              <!-- заменил селект надо на то, что будет показывать мне все роли! -->
+              <select id="role_delete" multiple class="form-control offset-2 col-8">
+                <option id="admin_role_delete" value="ROLE_USER">Пользователь</option>
+                <option id="user_role_delete" value="ROLE_ADMIN">Администратор</option>
+              </select>
+            </div>
+
+          </fieldset>
+
+
+        </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <!-- form="delete_of_user" как раз говорит, что эта кнопка относится к конкретной форме запроса -->
+        <button id="delete_user" form="delete_of_user" type="button" class="btn btn-danger">Удалить</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Без этой строчки перестают работать вкладки и прочее. Обязательно надо включить!!! -->
+<script src="http://code.jquery.com/jquery-3.6.4.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Подгружаю свой js для всяких кнопочек и прочей хрени -->
+<script src="/js/navbar.js"></script>
+<script src="/js/tableOfAllUsers.js"></script>
+<script src="/js/addNewUserForm.js"></script>
+<script src="/js/userPanel.js"></script>
+<script src="/js/statusDB.js"></script>
+<script src="/js/vkMethods.js"></script>
+</body>
+</html>
