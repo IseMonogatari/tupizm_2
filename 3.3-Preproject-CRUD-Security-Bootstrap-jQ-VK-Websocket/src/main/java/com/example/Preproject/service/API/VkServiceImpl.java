@@ -20,8 +20,8 @@ public class VkServiceImpl implements VkService {
     private final static String POST_ID = "2";
     private final static String PREVIEW_LENGTH = "0";
     private final static String V = "5.131";
-    private final static String TOKEN = "Bearer vk1.a.PreMLjVdRPYbUDXk9dHOM8M-JV-zFXepC8NS89Gl50k4r4S_U26KXFkUk1QRGvkILZjl6Nm-aItUqVINHw-FQu-NMhckhflSDO2_sZbWpj_BmYpEgWEy3IHcoxWT9meTKh0smQFbekzVFGMk8fqpVyvD0KqllAH_xaxgXbOBkEb0Y99mUnQaRznDibUKjuvM-k9d1DcxUuz7L6570M3rsQ";
-    private final static String TOKEN1 = "vk1.a.PreMLjVdRPYbUDXk9dHOM8M-JV-zFXepC8NS89Gl50k4r4S_U26KXFkUk1QRGvkILZjl6Nm-aItUqVINHw-FQu-NMhckhflSDO2_sZbWpj_BmYpEgWEy3IHcoxWT9meTKh0smQFbekzVFGMk8fqpVyvD0KqllAH_xaxgXbOBkEb0Y99mUnQaRznDibUKjuvM-k9d1DcxUuz7L6570M3rsQ";
+    private final static String TOKEN = "Bearer vk1.token";
+    private final static String TOKEN1 = "vk1.token";
 
     RestTemplate restTemplate = new RestTemplate();
 
